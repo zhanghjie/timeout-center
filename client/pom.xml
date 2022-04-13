@@ -58,10 +58,6 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cm.common.public</groupId>
-            <artifactId>timeout-api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

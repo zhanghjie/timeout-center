@@ -20,6 +20,10 @@ public enum TimeoutCenterStateEnum {
      * 取消
      */
     CANCEL(2, "取消"),
+    /**
+     * 失败
+     */
+    FAILED(3, "失败"),
     ;
 
 
