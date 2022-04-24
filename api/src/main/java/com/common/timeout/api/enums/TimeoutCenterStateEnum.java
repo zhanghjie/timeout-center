@@ -21,9 +21,13 @@ public enum TimeoutCenterStateEnum {
      */
     CANCEL(2, "取消"),
     /**
-     * 失败
+     * 处理失败
      */
     FAILED(3, "失败"),
+    /**
+     * 执行中
+     */
+    EXECUTION(4, "执行中"),
     ;
 
 

@@ -51,6 +51,10 @@ public class TimeoutTaskVO implements Serializable {
      * 任务修改时间
      */
     private String updateTime;
+    /**
+     * 任务修改时间
+     */
+    private String version;
 
     @Override
     public String toString() {
@@ -62,6 +66,7 @@ public class TimeoutTaskVO implements Serializable {
                 ", data='" + data + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 
@@ -119,5 +124,13 @@ public class TimeoutTaskVO implements Serializable {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

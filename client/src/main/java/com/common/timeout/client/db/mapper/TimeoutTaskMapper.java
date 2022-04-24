@@ -14,9 +14,18 @@ import org.apache.ibatis.annotations.Update;
 public interface TimeoutTaskMapper extends BaseMapper<TimeoutTaskDTO> {
 
     @Update(" update timeout_task \n" +
-            " set status = #{status} , update_time = #{updateTime}\n" +
-            " where biz_type = #{bizType}\n" +
-            " and biz_id = #{bizId}\n")
-    int updateStatusByBizTypeAndBizId(Integer status, String bizType, String bizId, Long updateTime);
+            " set state = #{state} , update_time = #{updateTime} \n" +
+            " where biz_type = #{bizType} \n" +
+            " and biz_id = #{bizId} \n" +
+            " and state = #{oldstate} \n" +
+            "")
+    int updateStateByBizTypeAndBizIdAndOldState(Integer state, String bizType, String bizId, Long updateTime, Integer oldstate);
+
+    @Update(" update timeout_task \n" +
+            " set state = #{state} , update_time = #{updateTime} \n" +
+            " where biz_type = #{bizType} \n" +
+            " and biz_id = #{bizId} \n" +
+            "")
+    int updateStateByBizTypeAndBizId(Integer state, String bizType, String bizId, Long updateTime);
 
 }

@@ -25,18 +25,6 @@ public interface QueueOperationService {
     void addTaskToStoreQueue(TimeoutTaskDTO timeoutTask);
 
     /**
-     * 功能描述: 从待执行队列删除
-     *
-     * @param bizType
-     * @param bizId
-     * @param actionTime
-     * @author zhanghaojie
-     * @date 2022/3/17 11:40
-     */
-    void deleteTaskFromStoreQueue(String bizType, String bizId, Long actionTime);
-
-
-    /**
      * 功能描述: 往就绪队列添加任务
      *
      * @param
@@ -50,7 +38,6 @@ public interface QueueOperationService {
      * 功能描述: 从就绪行队列删除
      *
      * @param
-     * @return
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */

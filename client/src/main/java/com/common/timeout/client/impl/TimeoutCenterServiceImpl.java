@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.timeout.client.db.model.TimeoutTaskDTO;
 import com.common.timeout.client.db.service.TaskTypeMangerService;
 import com.common.timeout.client.db.service.TimeoutTaskService;
+import com.common.timeout.client.enums.TimeoutCenterCodeEnum;
 import com.google.common.base.Preconditions;
 import com.common.timeout.api.TimeoutCenterService;
 import com.common.timeout.api.dto.AddTimeoutTaskDTO;
@@ -81,6 +82,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
         Preconditions.checkNotNull(addTimeoutTaskDTO.getActionTime());
         TimeoutTaskDTO timeoutTask = new TimeoutTaskDTO();
         BeanUtils.copyProperties(timeoutTask, addTimeoutTaskDTO);
+        timeoutTask.setVersion(0);
         //保存
         Integer result = timeoutTaskService.addTask(timeoutTask);
         if (result < 1) {
@@ -101,24 +103,38 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
      */
     @Override
     public WebResponse cancelTimeoutTask(String bizType, String bizId) {
-
         if (typeMangerService.getAllTaskType().contains(bizType)) {
             log.error("取消超时中心任务 bizType不存在：{},bizId:{}", bizId, bizId);
             return WebResponse.returnFail("10001", "bizType不存在");
+        }
+        // 只有待处理的任务才能被取消
+        // 避免任务已经变更状态 而被改为已取消
+        Integer result = timeoutTaskService.updateTaskStateLock(TimeoutCenterStateEnum.CANCEL, TimeoutCenterStateEnum.WAIT, bizType, bizId);
+        if (result > 0) {
+            // 正常取消完成
+            return WebResponse.returnSuccess();
         }
         TimeoutTaskDTO timeoutTask = new TimeoutTaskDTO();
         timeoutTask.setBizType(bizType);
         timeoutTask.setBizId(bizId);
         TimeoutTaskDTO queryValue = timeoutTaskService.queryTask(timeoutTask);
-        if (Objects.isNull(queryValue) || Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.CANCEL.getCode())) {
+
+        if (Objects.isNull(queryValue)) {
+            // 查询定时任务为空行
+            return WebResponse.returnFail(TimeoutCenterCodeEnum.TASK_IS_EMPTY.getCode(),
+                    TimeoutCenterCodeEnum.TASK_IS_EMPTY.getMessage());
+        }
+        if (Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.CANCEL.getCode())) {
+            // 其他线程完成的取消 则最终状态一致，视为成功
             return WebResponse.returnSuccess();
         }
-        Integer result = timeoutTaskService.updateTaskStatusByBizTypeAndBizId(bizType, bizId);
-        if (result < 1) {
-            return WebResponse.returnFail("20001", "任务保存不成功");
+        if (Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.SUCCESS.getCode())) {
+            // 其他线程完成的取消 则最终状态一致，视为成功
+            return WebResponse.returnFail(TimeoutCenterCodeEnum.TASK_IS_EMPTY.getCode(),
+                    TimeoutCenterCodeEnum.TASK_IS_EMPTY.getMessage());
         }
-        //删除待执行队列中的值
-        queueOperationService.deleteTaskFromStoreQueue(bizType, bizId, queryValue.getActionTime());
-        return WebResponse.returnSuccess();
+        // 其他情况视为失败
+        return WebResponse.returnFail(TimeoutCenterCodeEnum.CANCEL_TASK_FAIL.getCode(),
+                TimeoutCenterCodeEnum.CANCEL_TASK_FAIL.getMessage());
     }
 }

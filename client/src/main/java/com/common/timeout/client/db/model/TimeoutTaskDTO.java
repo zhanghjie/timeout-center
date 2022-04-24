@@ -52,4 +52,9 @@ public class TimeoutTaskDTO {
      * 任务数据
      */
     private String data;
+
+    /**
+     * 任务版本
+     */
+    private Integer version;
 }

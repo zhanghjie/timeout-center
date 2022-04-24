@@ -1,8 +1,9 @@
 package com.common.timeout.client.task;
 
 
-import com.alibaba.fastjson.JSON;
-import com.common.timeout.client.db.model.TimeoutTaskDTO;
+import com.common.timeout.client.service.TaskService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ScheduledThreadPoolTask
@@ -11,13 +12,27 @@ import com.common.timeout.client.db.model.TimeoutTaskDTO;
  * @author zhanghaojie
  * @date 2022/4/20 09:50
  */
+@Slf4j
 public class ScheduledThreadPoolTask implements Runnable {
 
+    @Autowired
+    private TaskService taskService;
 
-    private TimeoutTaskDTO timeoutTaskDTO;
+    /**
+     * 业务id，一般为关联的主订单或子订单id
+     * 同一bizType下不可重复
+     */
+    private String bizId;
 
-    public ScheduledThreadPoolTask(TimeoutTaskDTO timeoutTaskDTO) {
-        this.timeoutTaskDTO = timeoutTaskDTO;
+    /**
+     * 业务类型
+     */
+    private String bizType;
+
+
+    public ScheduledThreadPoolTask(String bizId, String bizType) {
+        this.bizId = bizId;
+        this.bizType = bizType;
     }
 
     /**
@@ -33,10 +48,7 @@ public class ScheduledThreadPoolTask implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println(JSON.toJSONString(timeoutTaskDTO));
-        // 查询状态
-        // 发送 MQ
-        // 修改 状态
+        taskService.doTask(bizType, bizId);
     }
 
 

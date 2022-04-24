@@ -15,7 +15,7 @@ public class WebResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String successCode = "00000";
+    public static final String successCode = "000000";
 
     private String code;
 
