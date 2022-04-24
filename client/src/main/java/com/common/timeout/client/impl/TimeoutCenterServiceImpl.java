@@ -11,7 +11,7 @@ import com.common.timeout.api.dto.AddTimeoutTaskDTO;
 import com.common.timeout.api.dto.TimeoutTaskVO;
 import com.common.timeout.api.dto.WebResponse;
 import com.common.timeout.api.enums.TimeoutCenterStateEnum;
-import com.common.timeout.client.QueueOperationService;
+import com.common.timeout.client.service.QueueOperationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +86,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
         if (result < 1) {
             return WebResponse.returnFail("10002", "任务保存不成功");
         }
-        //往redis队列中添加对象
+        //往延迟队列中添加对象
         queueOperationService.addTaskToStoreQueue(timeoutTask);
         return WebResponse.returnSuccess();
     }

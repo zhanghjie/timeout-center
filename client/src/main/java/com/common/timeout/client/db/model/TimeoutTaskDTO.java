@@ -44,7 +44,7 @@ public class TimeoutTaskDTO {
     private Integer state;
 
     /**
-     * 超时任务执行时间 级时间戳
+     * 超时任务期望执行时间 级时间戳
      */
     private Long actionTime;
 

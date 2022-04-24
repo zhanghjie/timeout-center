@@ -1,4 +1,4 @@
-package com.common.timeout.client;
+package com.common.timeout.client.service;
 
 import com.common.timeout.client.db.model.TimeoutTaskDTO;
 import com.common.timeout.client.pojo.TaskRedisVO;
@@ -23,17 +23,6 @@ public interface QueueOperationService {
      * @date 2022/3/17 11:40
      */
     void addTaskToStoreQueue(TimeoutTaskDTO timeoutTask);
-
-    /**
-     * 功能描述: 从待执行队列获取任务
-     *
-     * @param bizType
-     * @param actionTime 执行时间
-     * @return
-     * @author zhanghaojie
-     * @date 2022/3/17 11:40
-     */
-    List<TaskRedisVO> getTaskFromStoreQueue(String bizType, Long actionTime);
 
     /**
      * 功能描述: 从待执行队列删除

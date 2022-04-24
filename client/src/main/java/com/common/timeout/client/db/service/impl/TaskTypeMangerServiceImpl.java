@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -39,11 +40,13 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
     @Override
     public List<TaskTypeMangerDTO> getAllTaskTypeMangerDTO() {
         List<TaskTypeMangerDTO> taskTypeMangerDTOList = (List<TaskTypeMangerDTO>) DefaultEhcacheUtils.get(ALL_TASK_TYPE_DTO);
-        if (!CollectionUtils.isEmpty(taskTypeMangerDTOList)) {
+        if (!Objects.isNull(taskTypeMangerDTOList)) {
             return taskTypeMangerDTOList;
         }
         taskTypeMangerDTOList = taskTypeMangerMapper.selectList(new QueryWrapper<>());
         if (CollectionUtils.isEmpty(taskTypeMangerDTOList)) {
+            // 缓存空值 避免穿透
+            DefaultEhcacheUtils.put(ALL_TASK_TYPE_DTO, new ArrayList<>());
             return new ArrayList<>();
         }
         DefaultEhcacheUtils.put(ALL_TASK_TYPE_DTO, taskTypeMangerDTOList);
@@ -60,11 +63,13 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
     @Override
     public List<String> getAllTaskType() {
         List<String> taskTypeList = (List<String>) DefaultEhcacheUtils.get(ALL_TASK_TYPE);
-        if (!CollectionUtils.isEmpty(taskTypeList)) {
+        if (!Objects.isNull(taskTypeList)) {
             return taskTypeList;
         }
         List<TaskTypeMangerDTO> mangerDTOList = getAllTaskTypeMangerDTO();
         if (CollectionUtils.isEmpty(mangerDTOList)) {
+            // 缓存空值 避免穿透
+            DefaultEhcacheUtils.put(ALL_TASK_TYPE, new ArrayList<>());
             return new ArrayList<>();
         }
         taskTypeList = mangerDTOList.stream().map(TaskTypeMangerDTO::getBizType).collect(Collectors.toList());
