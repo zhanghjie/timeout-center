@@ -3,6 +3,7 @@ package com.common.timeout.client.service.impl;
 import com.common.timeout.client.db.model.TimeoutTaskDTO;
 import com.common.timeout.client.service.QueueOperationService;
 import com.common.timeout.client.task.ScheduledThreadPoolTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/4/20 09:52
  */
 @Service
+@Slf4j
 public class QueueOperationServiceImpl implements QueueOperationService {
 
     ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(8);

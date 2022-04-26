@@ -5,6 +5,7 @@ import com.common.timeout.client.db.service.TaskTypeMangerService;
 import com.common.timeout.client.cache.ehcache.DefaultEhcacheUtils;
 import com.common.timeout.client.db.mapper.TaskTypeMangerMapper;
 import com.common.timeout.client.db.model.TaskTypeMangerDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -30,6 +31,8 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
 
     private static final String ALL_TASK_TYPE_DTO = "allTaskTypeDTO";
 
+    private static final String TASK_TYPE_DTO = "taskTypeDTO";
+
     /**
      * 功能描述: 获取所有的任务类型对象
      *
@@ -53,6 +56,7 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
         return taskTypeMangerDTOList;
     }
 
+
     /**
      * 功能描述: 获取所有的任务类型
      *
@@ -75,5 +79,32 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
         taskTypeList = mangerDTOList.stream().map(TaskTypeMangerDTO::getBizType).collect(Collectors.toList());
         DefaultEhcacheUtils.put(ALL_TASK_TYPE, taskTypeList);
         return taskTypeList;
+    }
+
+    /**
+     * 功能描述: 根据BizType获取任务类型
+     *
+     * @param bizType
+     * @return List<TaskTypeMangerDTO>
+     * @author zhanghaojie
+     * @date 2022/3/17 15:32
+     */
+    @Override
+    public TaskTypeMangerDTO getTaskTypeByBizType(String bizType) {
+        TaskTypeMangerDTO taskTypeMangerDTO = (TaskTypeMangerDTO) DefaultEhcacheUtils.get(TASK_TYPE_DTO + bizType);
+        if (!Objects.isNull(taskTypeMangerDTO) && StringUtils.isNotBlank(taskTypeMangerDTO.getBizType())) {
+            return taskTypeMangerDTO;
+        }
+        TaskTypeMangerDTO queryMangerDTO = new TaskTypeMangerDTO(bizType);
+        taskTypeMangerDTO = taskTypeMangerMapper.selectOne(new QueryWrapper<>(queryMangerDTO));
+        if (!Objects.isNull(taskTypeMangerDTO)) {
+            taskTypeMangerDTO = new TaskTypeMangerDTO();
+            taskTypeMangerDTO.setBizType(bizType);
+            // 缓存空值 避免穿透
+            DefaultEhcacheUtils.put(TASK_TYPE_DTO + bizType, new TaskTypeMangerDTO());
+            return null;
+        }
+        DefaultEhcacheUtils.put(TASK_TYPE_DTO + bizType, taskTypeMangerDTO);
+        return taskTypeMangerDTO;
     }
 }

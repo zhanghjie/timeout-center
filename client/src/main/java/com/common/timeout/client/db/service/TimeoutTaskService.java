@@ -14,8 +14,9 @@ public interface TimeoutTaskService {
 
     /**
      * 修改超时中心任务状态
+     * <p>
+     * 利用 state 做一个乐观锁
      *
-     *  利用 state 做一个乐观锁
      * @param bizType
      * @param bizId
      * @return Integer
@@ -25,9 +26,23 @@ public interface TimeoutTaskService {
     Integer updateTaskStateLock(TimeoutCenterStateEnum stateEnum, TimeoutCenterStateEnum oldStateEnum, String bizType, String bizId);
 
     /**
-     * 修改超时中心任务状态
+     * 超时重试次数+1
+     * <p>
+     * 利用 state 做一个乐观锁
      *
-     *  利用 state 做一个乐观锁
+     * @param bizType
+     * @param bizId
+     * @return Integer
+     * @author zhanghaojie
+     * @date 2021/12/18 15:29
+     */
+    Integer addTaskRetryCount(String bizType, String bizId);
+
+    /**
+     * 修改超时中心任务状态
+     * <p>
+     * 利用 state 做一个乐观锁
+     *
      * @param bizType
      * @param bizId
      * @return Integer

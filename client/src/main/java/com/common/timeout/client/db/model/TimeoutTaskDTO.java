@@ -39,7 +39,7 @@ public class TimeoutTaskDTO {
     private String bizType;
 
     /**
-     * 超时任务状态（0待处理，2已处理，3取消）
+     * 超时任务状态 {@link com.common.timeout.api.enums.TimeoutCenterStateEnum}
      */
     private Integer state;
 
@@ -54,7 +54,8 @@ public class TimeoutTaskDTO {
     private String data;
 
     /**
-     * 任务版本
+     * 重试次数
      */
-    private Integer version;
+    private Integer retryCount;
+
 }

@@ -31,4 +31,13 @@ public interface TaskTypeMangerService {
      */
     List<String> getAllTaskType();
 
+    /**
+     * 功能描述: 根据BizType获取任务类型
+     *
+     * @return List<TaskTypeMangerDTO>
+     * @author zhanghaojie
+     * @date 2022/3/17 15:32
+     */
+    TaskTypeMangerDTO getTaskTypeByBizType(String bizType);
+
 }

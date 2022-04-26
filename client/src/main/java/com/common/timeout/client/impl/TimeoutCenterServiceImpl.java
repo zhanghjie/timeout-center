@@ -82,7 +82,6 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
         Preconditions.checkNotNull(addTimeoutTaskDTO.getActionTime());
         TimeoutTaskDTO timeoutTask = new TimeoutTaskDTO();
         BeanUtils.copyProperties(timeoutTask, addTimeoutTaskDTO);
-        timeoutTask.setVersion(0);
         //保存
         Integer result = timeoutTaskService.addTask(timeoutTask);
         if (result < 1) {
@@ -120,18 +119,19 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
         TimeoutTaskDTO queryValue = timeoutTaskService.queryTask(timeoutTask);
 
         if (Objects.isNull(queryValue)) {
-            // 查询定时任务为空行
+            // 查询定时任务为空
             return WebResponse.returnFail(TimeoutCenterCodeEnum.TASK_IS_EMPTY.getCode(),
                     TimeoutCenterCodeEnum.TASK_IS_EMPTY.getMessage());
         }
         if (Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.CANCEL.getCode())) {
-            // 其他线程完成的取消 则最终状态一致，视为成功
+            // 或许是其他线程完成的取消 最终状态一致，视为成功
             return WebResponse.returnSuccess();
         }
-        if (Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.SUCCESS.getCode())) {
-            // 其他线程完成的取消 则最终状态一致，视为成功
-            return WebResponse.returnFail(TimeoutCenterCodeEnum.TASK_IS_EMPTY.getCode(),
-                    TimeoutCenterCodeEnum.TASK_IS_EMPTY.getMessage());
+        if (Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.SUCCESS.getCode()) ||
+                Objects.equals(queryValue.getState(), TimeoutCenterStateEnum.EXECUTION.getCode())) {
+            // 任务已执行或正在执行中
+            return WebResponse.returnFail(TimeoutCenterCodeEnum.TASK_IS_SUCCESS.getCode(),
+                    TimeoutCenterCodeEnum.TASK_IS_SUCCESS.getMessage());
         }
         // 其他情况视为失败
         return WebResponse.returnFail(TimeoutCenterCodeEnum.CANCEL_TASK_FAIL.getCode(),

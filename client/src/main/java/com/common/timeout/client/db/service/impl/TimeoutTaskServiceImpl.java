@@ -42,8 +42,26 @@ public class TimeoutTaskServiceImpl implements TimeoutTaskService {
         if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
             return 0;
         }
-        Date date = new Date();
-        return timeoutTaskMapper.updateStateByBizTypeAndBizIdAndOldState(stateEnum.getCode(), bizType, bizId, date.getTime(), oldStateEnum.getCode());
+        return timeoutTaskMapper.updateStateByBizTypeAndBizIdAndOldState(stateEnum.getCode(), bizType, bizId, new Date().getTime(), oldStateEnum.getCode());
+    }
+
+    /**
+     * 超时重试次数+1
+     * <p>
+     * 利用 state 做一个乐观锁
+     *
+     * @param bizType
+     * @param bizId
+     * @return Integer
+     * @author zhanghaojie
+     * @date 2021/12/18 15:29
+     */
+    @Override
+    public Integer addTaskRetryCount(String bizType, String bizId) {
+        if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
+            return 0;
+        }
+        return timeoutTaskMapper.addTaskRetryCount(bizType, bizId, new Date().getTime());
     }
 
     /**
@@ -61,9 +79,7 @@ public class TimeoutTaskServiceImpl implements TimeoutTaskService {
         if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
             return 0;
         }
-        Date date = new Date();
-        return timeoutTaskMapper.updateStateByBizTypeAndBizId(stateEnum.getCode(), bizType, bizId, date.getTime());
-
+        return timeoutTaskMapper.updateStateByBizTypeAndBizId(stateEnum.getCode(), bizType, bizId, new Date().getTime());
     }
 
     /**

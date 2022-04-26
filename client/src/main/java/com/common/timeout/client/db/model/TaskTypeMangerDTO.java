@@ -19,15 +19,20 @@ public class TaskTypeMangerDTO {
     private String bizName;
     // 责任人
     private String responsible;
-    // 失败后重试间隔时间（ms）
-    private String retryTime;
     // 超时任务发送mq的topic
     private String mqTopic;
-    // 超时任务发送mq的group
-    private String mqGroup;
     // 创建时间
     private Long createTime;
     // 修改时间
     private Long updateTime;
+
+    public TaskTypeMangerDTO() {
+    }
+
+
+    public TaskTypeMangerDTO(String bizType) {
+        this.bizType = bizType;
+    }
+
 
 }

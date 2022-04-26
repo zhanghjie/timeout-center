@@ -28,4 +28,11 @@ public interface TimeoutTaskMapper extends BaseMapper<TimeoutTaskDTO> {
             "")
     int updateStateByBizTypeAndBizId(Integer state, String bizType, String bizId, Long updateTime);
 
+    @Update(" update timeout_task \n" +
+            " set retryCount = retryCount +1 , update_time = #{updateTime} \n" +
+            " where biz_type = #{bizType} \n" +
+            " and biz_id = #{bizId} \n" +
+            "")
+    int addTaskRetryCount(String bizType, String bizId, Long updateTime);
+
 }
