@@ -15,7 +15,7 @@ public class WebResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String successCode = "000000";
+    public static final String SUCCESS_CODE = "000000";
 
     private String code;
 
@@ -49,11 +49,11 @@ public class WebResponse<T> implements Serializable {
     }
 
     public static <T> WebResponse<T> returnSuccess() {
-        return new WebResponse(successCode);
+        return new WebResponse(SUCCESS_CODE);
     }
 
     public static <T> WebResponse<T> returnSuccess(T t) {
-        return new WebResponse(successCode, t);
+        return new WebResponse(SUCCESS_CODE, t);
     }
 
     public static <T> WebResponse<T> returnFail(String code, String msg) {
@@ -74,7 +74,7 @@ public class WebResponse<T> implements Serializable {
     }
 
     private void setIsSuccess(String code) {
-        if (Objects.equals(code, successCode)) {
+        if (Objects.equals(code, SUCCESS_CODE)) {
             this.isSuccess = true;
         } else {
             this.isSuccess = false;

@@ -35,7 +35,7 @@ public class TimeoutMqCallback implements ListenableFutureCallback {
      */
     @Override
     public void onFailure(Throwable ex) {
-        taskService.doSendMQFailed(this.bizType, this.bizId);
+        taskService.doSendMessageFailed(this.bizType, this.bizId);
     }
 
 
@@ -49,6 +49,7 @@ public class TimeoutMqCallback implements ListenableFutureCallback {
     public void onSuccess(Object result) {
         // 这里不考虑消息重复发送的问题
         // 当接收到消息时 直接把状态改为成功即可
+        taskService.doSendMessageSuccess(bizType, bizId);
     }
 
 }

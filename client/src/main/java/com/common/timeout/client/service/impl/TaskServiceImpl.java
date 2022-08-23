@@ -69,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
         TimeoutTaskDTO taskWrapper = new TimeoutTaskDTO();
         taskWrapper.setBizType(bizType);
         taskWrapper.setBizId(bizId);
+        // 查询出待发送任务的具体内容
         TimeoutTaskDTO timeoutTaskDTO = timeoutTaskService.queryTask(taskWrapper);
         if (Objects.isNull(timeoutTaskDTO) || !Objects.equals(timeoutTaskDTO.getState(), TimeoutCenterStateEnum.EXECUTION.getCode())) {
             return;
@@ -86,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
      * @date 2022/4/25 15:52
      */
     @Override
-    public void doSendMQFailed(String bizType, String bizId) {
+    public void doSendMessageFailed(String bizType, String bizId) {
         log.error("发送MQ消息失败，bizType:{},bizId:{}", bizType, bizId);
         TaskTypeMangerDTO taskTypeMangerDTO = taskTypeMangerService.getTaskTypeByBizType(bizType);
         if (Objects.isNull(taskTypeMangerDTO) || RETRY_COUNT <= 0) {
@@ -114,7 +115,7 @@ public class TaskServiceImpl implements TaskService {
         if (result < 0) {
             return;
         }
-        timeoutTaskDTO.setActionTime(new Date().getTime() + RETRY_TIME);
+        timeoutTaskDTO.setActionTime(System.currentTimeMillis() + RETRY_TIME);
         // 向任务队列添加任务
         queueOperationService.addTaskToDeadQueue(timeoutTaskDTO);
         // 修改重试次数
@@ -130,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
      * @date 2022/4/25 15:52
      */
     @Override
-    public void doSendMQSuccess(String bizType, String bizId) {
+    public void doSendMessageSuccess(String bizType, String bizId) {
         log.info("成功发送MQ消息，bizType:{},bizId:{}", bizType, bizId);
         timeoutTaskService.updateTaskStateByBizTypeAndBizId(TimeoutCenterStateEnum.SUCCESS, bizType, bizId);
     }

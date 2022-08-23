@@ -140,15 +140,6 @@
             </dependency>
 
 
-            <!-- tcdev 集成-->
-            <dependency>
-                <groupId>qunar.tc</groupId>
-                <artifactId>tcdev</artifactId>
-                <version>${tcdev.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -207,12 +198,6 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>1.2</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.10</version>
@@ -240,12 +225,6 @@
                 <artifactId>mybatis</artifactId>
                 <version>3.5.7</version>
                 <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>qunar.quhuhu</groupId>
-                <artifactId>sms-api</artifactId>
-                <version>1.0.6</version>
             </dependency>
 
         </dependencies>

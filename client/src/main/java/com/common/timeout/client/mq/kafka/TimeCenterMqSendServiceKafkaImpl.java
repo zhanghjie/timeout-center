@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class TimeCenterKafkaMqSender implements TimeCenterMqSendService {
+public class TimeCenterMqSendServiceKafkaImpl implements TimeCenterMqSendService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     //构造器方式注入  kafkaTemplate
-    public TimeCenterKafkaMqSender(KafkaTemplate<String, String> kafkaTemplate) {
+    public TimeCenterMqSendServiceKafkaImpl(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

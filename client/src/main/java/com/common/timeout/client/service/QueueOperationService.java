@@ -17,8 +17,7 @@ public interface QueueOperationService {
     /**
      * 功能描述: 往待执行队列添加任务
      *
-     * @param
-     * @return
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */
@@ -27,8 +26,7 @@ public interface QueueOperationService {
     /**
      * 功能描述: 往就绪队列添加任务
      *
-     * @param
-     * @return
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */
@@ -47,8 +45,7 @@ public interface QueueOperationService {
     /**
      * 功能描述: 往死信行队列添加任务
      *
-     * @param
-     * @return
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */

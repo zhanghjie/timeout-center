@@ -42,7 +42,7 @@ public class TimeoutTaskServiceImpl implements TimeoutTaskService {
         if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
             return 0;
         }
-        return timeoutTaskMapper.updateStateByBizTypeAndBizIdAndOldState(stateEnum.getCode(), bizType, bizId, new Date().getTime(), oldStateEnum.getCode());
+        return timeoutTaskMapper.updateStateByBizTypeAndBizIdAndOldState(stateEnum.getCode(), bizType, bizId, System.currentTimeMillis(), oldStateEnum.getCode());
     }
 
     /**
@@ -61,7 +61,7 @@ public class TimeoutTaskServiceImpl implements TimeoutTaskService {
         if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
             return 0;
         }
-        return timeoutTaskMapper.addTaskRetryCount(bizType, bizId, new Date().getTime());
+        return timeoutTaskMapper.addTaskRetryCount(bizType, bizId, System.currentTimeMillis());
     }
 
     /**
@@ -79,7 +79,7 @@ public class TimeoutTaskServiceImpl implements TimeoutTaskService {
         if (StringUtils.isBlank(bizType) || StringUtils.isBlank(bizId)) {
             return 0;
         }
-        return timeoutTaskMapper.updateStateByBizTypeAndBizId(stateEnum.getCode(), bizType, bizId, new Date().getTime());
+        return timeoutTaskMapper.updateStateByBizTypeAndBizId(stateEnum.getCode(), bizType, bizId, System.currentTimeMillis());
     }
 
     /**

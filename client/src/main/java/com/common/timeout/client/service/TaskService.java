@@ -28,7 +28,7 @@ public interface TaskService {
      * @author zhanghaojie
      * @date 2022/4/25 15:52
      */
-    void doSendMQFailed(String bizType, String bizId);
+    void doSendMessageFailed(String bizType, String bizId);
 
     /**
      * 功能描述: 发送Mq 消息成功回调
@@ -38,5 +38,5 @@ public interface TaskService {
      * @author zhanghaojie
      * @date 2022/4/25 15:52
      */
-    void doSendMQSuccess(String bizType, String bizId);
+    void doSendMessageSuccess(String bizType, String bizId);
 }

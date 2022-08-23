@@ -2,48 +2,40 @@ package com.common.timeout.client.service.impl;
 
 import com.common.timeout.client.db.model.TimeoutTaskDTO;
 import com.common.timeout.client.service.QueueOperationService;
-import com.common.timeout.client.task.ScheduledThreadPoolTask;
-import lombok.extern.slf4j.Slf4j;
+import com.common.timeout.client.tools.timewheel.TimerWheelService;
+import com.common.timeout.client.tools.timewheel.vo.TimerTask;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 /**
- * QueueOperationServiceImpl
- * 功能描述：TODO
+ * TimeQueueServiceImpl
+ * 功能描述：时间轮算法实现
  *
  * @author zhanghaojie
- * @date 2022/4/20 09:52
+ * @date 2022/8/17 17:37
  */
 @Service
-@Slf4j
-public class QueueOperationServiceImpl implements QueueOperationService {
-
-    ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(8);
+public class TimeQueueServiceImpl implements QueueOperationService {
+    @Autowired
+    private TimerWheelService timerWheelService;
 
     /**
      * 功能描述: 往待执行队列添加任务
      *
-     * @param timeoutTask
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */
     @Override
     public void addTaskToStoreQueue(TimeoutTaskDTO timeoutTask) {
-        Long delayTime = timeoutTask.getActionTime() - System.currentTimeMillis();
-        if (delayTime < 0) {
-            // 当前时间超过了执行时间 立即执行 （其实也是加入到线程池 不过延迟时间为0）
-            executorService.execute(new ScheduledThreadPoolTask(timeoutTask.getBizId(), timeoutTask.getBizType()));
-        }
-        // 添加任务至延迟队列
-        executorService.schedule(new ScheduledThreadPoolTask(timeoutTask.getBizId(), timeoutTask.getBizType()), delayTime, TimeUnit.MILLISECONDS);
+        TimerTask timerTask = new TimerTask(timeoutTask.getBizType(), timeoutTask.getBizId(), timeoutTask.getActionTime());
+        timerWheelService.add(timerTask);
     }
 
     /**
      * 功能描述: 往就绪队列添加任务
      *
-     * @param timeoutTask@return
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */
@@ -55,7 +47,6 @@ public class QueueOperationServiceImpl implements QueueOperationService {
     /**
      * 功能描述: 从就绪行队列删除
      *
-     * @return
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */
@@ -67,7 +58,7 @@ public class QueueOperationServiceImpl implements QueueOperationService {
     /**
      * 功能描述: 往死信行队列添加任务
      *
-     * @param timeoutTask@return
+     * @param timeoutTask 任务
      * @author zhanghaojie
      * @date 2022/3/17 11:40
      */

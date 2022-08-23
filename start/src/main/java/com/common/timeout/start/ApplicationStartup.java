@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @date 2021/11/10 10:54
  */
 @SpringBootApplication
-@ImportResource(locations = {"classpath:application-config.xml"})
 @EnableScheduling
 @EnableAsync
 public class ApplicationStartup extends SpringBootServletInitializer {
