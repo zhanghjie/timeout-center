@@ -4,7 +4,6 @@ package com.common.timeout.api;
 import com.common.timeout.api.dto.AddTimeoutTaskDTO;
 import com.common.timeout.api.dto.TimeoutTaskVO;
 import com.common.timeout.api.dto.WebResponse;
-import com.sun.istack.internal.NotNull;
 
 /**
  * TimeoutCenterService
@@ -24,7 +23,7 @@ public interface TimeoutCenterService {
      * @author zhanghaojie
      * @date 2021/12/13 18:49
      */
-    WebResponse<TimeoutTaskVO> queryTimeoutTask(@NotNull String bizType, @NotNull String bizId);
+    WebResponse<TimeoutTaskVO> queryTimeoutTask(String bizType, String bizId);
 
     /**
      * 添加超时中心任务
@@ -34,7 +33,7 @@ public interface TimeoutCenterService {
      * @author zhanghaojie
      * @date 2021/12/13 18:49
      */
-    WebResponse addTimeoutTask(@NotNull AddTimeoutTaskDTO addTimeoutTaskDTO);
+    WebResponse addTimeoutTask(AddTimeoutTaskDTO addTimeoutTaskDTO);
 
     /**
      * 取消超时中心任务
@@ -44,5 +43,5 @@ public interface TimeoutCenterService {
      * @author zhanghaojie
      * @date 2021/12/13 18:49
      */
-    WebResponse cancelTimeoutTask(@NotNull String bizType, @NotNull String bizId);
+    WebResponse cancelTimeoutTask(String bizType, String bizId);
 }
