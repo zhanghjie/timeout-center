@@ -1,8 +1,7 @@
 package com.common.timeout.infrastructure.timewheel.vo;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.SneakyThrows;
 
 /**
  * TimerTask
@@ -12,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2022/8/18 10:44
  */
 @Data
-@Slf4j
 public class TimerTask implements Runnable {
 
     /**
-     * 延时时间
+     * 期待执行时间，毫秒
      */
     private Long actionTime;
 
@@ -36,7 +34,7 @@ public class TimerTask implements Runnable {
     private TimerTaskEntry timerTaskEntry;
 
 
-    public TimerTask(String bizType, String bizId, long actionTime) {
+    public TimerTask(String bizType, String bizId, Long actionTime) {
         this.bizType = bizType;
         this.bizId = bizId;
         this.actionTime = actionTime;
@@ -54,6 +52,16 @@ public class TimerTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("执行了定时任务");
+        System.out.println("执行了定时任务,当前时间:" + System.currentTimeMillis() + "bizType:" + this.bizType + ",bizId" + bizId);
+    }
+
+    @Override
+    public String toString() {
+        return "TimerTask{" +
+                "actionTime=" + actionTime +
+                ", bizType='" + bizType + '\'' +
+                ", bizId='" + bizId + '\'' +
+                ", timerTaskEntry=" + timerTaskEntry +
+                '}';
     }
 }

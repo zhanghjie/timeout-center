@@ -1,5 +1,6 @@
 package com.common.timeout.infrastructure.timewheel.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.common.timeout.infrastructure.timewheel.TimerWheelService;
 import com.common.timeout.infrastructure.timewheel.vo.TimeWheel;
 import com.common.timeout.infrastructure.timewheel.vo.TimerTask;
@@ -76,7 +77,7 @@ public class TimerWheelServiceImpl implements TimerWheelService {
 
     @Override
     public void add(TimerTask timerTask) {
-        log.info("=======添加任务开始====task:{}", timerTask.getBizId());
+        log.info("=======添加任务开始====task:{}", JSON.toJSONString(timerTask));
         TimerTaskEntry entry = new TimerTaskEntry(timerTask, timerTask.getActionTime());
         timerTask.setTimerTaskEntry(entry);
         addTimerTaskEntry(entry);

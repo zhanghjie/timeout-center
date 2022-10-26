@@ -2,9 +2,7 @@ package com.common.timeout.infrastructure.invocation.cglib;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+import net.sf.cglib.proxy.*;
 
 import java.lang.reflect.Method;
 
@@ -61,7 +59,8 @@ public class TimeoutCenterLogMethodInterceptor implements MethodInterceptor {
         //设置被代理类
         enhancer.setSuperclass(target);
         // 设置回调
-        enhancer.setCallback(this);
+        enhancer.setCallbacks(new Callback[]{this, NoOp.INSTANCE});
+        enhancer.setCallbackFilter(new PersistenceServiceCallbackFilter());
         // create方法正式创建代理类
         return (T) enhancer.create();
     }

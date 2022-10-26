@@ -12,14 +12,19 @@ import lombok.Data;
 @Data
 public class TimerTaskEntry implements Comparable<TimerTaskEntry> {
     private TimerTask timerTask;
-    private long expireMs;
+    /**
+     * 期望执行时间
+     */
+    private Long expireMs;
     volatile TimerTaskList timedTaskList;
+    /** 当前对象在链表下一个元素的位置*/
     TimerTaskEntry next;
+    /** 当前对象在链表上一个元素的位置*/
     TimerTaskEntry prev;
 
-    public TimerTaskEntry(TimerTask timedTask, long expireMs) {
+    public TimerTaskEntry(TimerTask timedTask, Long expireMs) {
         this.timerTask = timedTask;
-        this.expireMs = expireMs;
+        this.expireMs =  expireMs;
         this.next = null;
         this.prev = null;
     }

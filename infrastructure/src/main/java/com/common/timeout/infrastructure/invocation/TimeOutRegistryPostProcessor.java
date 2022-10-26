@@ -1,6 +1,6 @@
 package com.common.timeout.infrastructure.invocation;
 
-import com.common.timeout.infrastructure.invocation.cglib.PersistenceServiceCallbackFilter;
+import com.common.timeout.infrastructure.annotation.ToLog;
 import com.common.timeout.infrastructure.invocation.cglib.TimeoutCenterLogMethodInterceptor;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
@@ -161,7 +161,7 @@ public class TimeOutRegistryPostProcessor implements BeanPostProcessor {
         Set<Class<?>> clsList = getClasses(packageName);
         if (clsList != null && clsList.size() > 0) {
             for (Class<?> cls : clsList) {
-                if (cls.getAnnotation(Service.class) != null) {
+                if (cls.getAnnotation(ToLog.class) != null) {
                     controllers.add(cls);
                 }
             }

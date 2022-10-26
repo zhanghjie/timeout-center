@@ -15,11 +15,15 @@ import java.util.Set;
  */
 public class PersistenceServiceCallbackFilter implements CallbackFilter {
 
-    // save方法在callback数组中的下标
+    /**
+     * 需要回调的方法在数组中的下标
+     */
     public static final int CALLBACK = 0;
 
-    // save方法在callback数组中的下标
-    public static final int donoting = 1;
+    /**
+     * 忽略的方法
+     */
+    public static final int DONOTING = 1;
 
     private static final Set<String> IGNORE_METHOD_SET = SetUtils.hashSet("toString", "hashCode", "toString");
 
@@ -34,7 +38,7 @@ public class PersistenceServiceCallbackFilter implements CallbackFilter {
     public int accept(Method method) {
         String methodName = method.getName();
         if (IGNORE_METHOD_SET.contains(methodName)) {
-            return donoting;
+            return DONOTING;
         }
         return CALLBACK;
     }

@@ -16,7 +16,7 @@ public class TimerTaskList implements Delayed {
     /**
      * TimerTaskList 环形链表使用一个虚拟根节点root
      */
-    private TimerTaskEntry root = new TimerTaskEntry(null, -1);
+    private TimerTaskEntry root = new TimerTaskEntry(null, -1L);
 
     {
         root.next = root;
@@ -39,7 +39,8 @@ public class TimerTaskList implements Delayed {
      * @return
      */
     boolean setExpiration(long expirationMs) {
-        return expiration.getAndSet(expirationMs) != expirationMs;
+        long oldValue = expiration.getAndSet(expirationMs);
+        return oldValue == -1 || oldValue == expirationMs;
     }
 
     public boolean addTask(TimerTaskEntry entry) {

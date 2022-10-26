@@ -1,5 +1,6 @@
 package com.common.timeout.infrastructure.timewheel.vo;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.DelayQueue;
@@ -24,7 +25,7 @@ public class TimeWheel {
     private int wheelSize;
 
     /**
-     * 一轮的时间跨度
+     * 一轮的时间跨度x
      */
     private long interval;
 
@@ -46,11 +47,11 @@ public class TimeWheel {
     private DelayQueue<TimerTaskList> delayQueue;
 
     public TimeWheel(long tickMs, int wheelSize, long currentTime, DelayQueue<TimerTaskList> delayQueue) {
+        this.currentTime = currentTime;
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
         this.interval = tickMs * wheelSize;
         this.buckets = new TimerTaskList[wheelSize];
-        this.currentTime = currentTime - (currentTime % tickMs);
         this.delayQueue = delayQueue;
         for (int i = 0; i < wheelSize; i++) {
             buckets[i] = new TimerTaskList();
@@ -60,6 +61,8 @@ public class TimeWheel {
     public boolean add(TimerTaskEntry entry) {
         long expiration = entry.getExpireMs();
         if (expiration < tickMs + currentTime) {
+            System.out.println("bizId" + JSON.toJSONString(entry.getTimerTask()) + ",期望执行时间:" + expiration
+                    + ",tickMs:" + tickMs + ",currentTime" + currentTime + "，当前时间：" + System.currentTimeMillis());
             //到期了
             return false;
         } else if (expiration < currentTime + interval) {
