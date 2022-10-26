@@ -35,7 +35,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
     @Autowired
     private TimeoutTaskService timeoutTaskService;
 
-    @Autowired
+    @Resource(name = "taskTypeMangerServiceImpl")
     private TaskTypeMangerService typeMangerService;
 
     @Resource(name = "timeQueueServiceImpl")

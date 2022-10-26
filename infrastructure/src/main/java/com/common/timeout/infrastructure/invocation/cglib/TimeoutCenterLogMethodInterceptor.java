@@ -43,7 +43,7 @@ public class TimeoutCenterLogMethodInterceptor implements MethodInterceptor {
             object = methodProxy.invokeSuper(o, objects);
             log.info("执行接口拦截after,method:{},result:{}", method.getName(), JSON.toJSONString(object));
         } catch (Exception e) {
-            log.error("代理拦截发生异常,{}", e.getMessage());
+            log.error("代理拦截发生异常,{}", e);
         }
         return object;
     }

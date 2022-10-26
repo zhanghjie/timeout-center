@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @SpringBootApplication
-@MapperScan("")
+@MapperScan("com.common.timeout.infrastructure.db.mapper")
 @ImportResource(locations = {"classpath:application-config.xml"})
 @EnableScheduling
 @EnableOpenApi
