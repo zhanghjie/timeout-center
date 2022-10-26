@@ -1,0 +1,13 @@
+spring:
+  resources:
+    static-locations: classpath:static/
+
+
+logging:
+  config: classpath:logback.xml  #日志文件
+
+#  import: dubbo.xml
+#dubbo:
+#  zkadress: zk.beta.corp.qunar.com:2181,zk1.beta.corp.qunar.com:2181,zk2.beta.corp.qunar.com:2181,zk3.beta.corp.qunar.com:2181
+#  group: /appcenter/group/beta
+
