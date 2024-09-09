@@ -11,7 +11,7 @@ import com.common.timeout.infrastructure.TaskTypeMangerService;
 import com.common.timeout.infrastructure.TimeoutTaskService;
 import com.common.timeout.infrastructure.db.model.TimeoutTaskDTO;
 import com.common.timeout.infrastructure.enums.TimeoutCenterCodeEnum;
-import com.common.timeout.infrastructure.mq.service.QueueOperationService;
+import com.common.timeout.infrastructure.mq.QueueOperationService;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
+import java.rmi.Naming;
 import java.util.Objects;
 
 /**
@@ -30,7 +32,8 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class TimeoutCenterServiceImpl implements TimeoutCenterService {
+public class TimeoutCenterServiceImpl implements TimeoutCenterService , Serializable {
+    private static final long serialVersionUID = -1;
 
     @Autowired
     private TimeoutTaskService timeoutTaskService;
@@ -40,6 +43,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
 
     @Resource(name = "timeQueueServiceImpl")
     private QueueOperationService queueOperationService;
+
 
     /**
      * 查询超时中心任务
@@ -55,8 +59,8 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService {
         TimeoutTaskDTO timeoutTask = new TimeoutTaskDTO();
         timeoutTask.setBizType(bizType);
         timeoutTask.setBizId(bizId);
-//        TimeoutTaskDTO queryValue = timeoutTaskService.queryTask(timeoutTask);
-        TimeoutTaskDTO queryValue = new TimeoutTaskDTO();
+        TimeoutTaskDTO queryValue = timeoutTaskService.queryTask(timeoutTask);
+//        TimeoutTaskDTO queryValue = new TimeoutTaskDTO();
         if (Objects.isNull(queryValue)) {
             // 查询为空也认为是正常的操作
             return WebResponse.returnSuccess();

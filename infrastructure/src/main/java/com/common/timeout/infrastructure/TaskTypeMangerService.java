@@ -1,5 +1,6 @@
 package com.common.timeout.infrastructure;
 
+import com.common.timeout.infrastructure.annotation.ToLog;
 import com.common.timeout.infrastructure.db.model.TaskTypeMangerDTO;
 
 import java.util.List;

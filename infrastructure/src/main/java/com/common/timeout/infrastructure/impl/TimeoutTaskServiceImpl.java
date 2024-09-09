@@ -1,4 +1,4 @@
-package com.common.timeout.infrastructure.service;
+package com.common.timeout.infrastructure.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

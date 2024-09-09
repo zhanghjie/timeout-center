@@ -1,5 +1,7 @@
 package com.common.timeout.infrastructure.db.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -12,6 +14,7 @@ public class TimeoutTaskDTO {
     /**
      * 主键
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -54,5 +57,10 @@ public class TimeoutTaskDTO {
      * 重试次数
      */
     private Integer retryCount;
+
+    /**
+     * 优先级
+     */
+    private Integer order;
 
 }

@@ -4,6 +4,10 @@ package com.common.timeout.api;
 import com.common.timeout.api.dto.AddTimeoutTaskDTO;
 import com.common.timeout.api.dto.TimeoutTaskVO;
 import com.common.timeout.api.dto.WebResponse;
+import org.apache.poi.util.Removal;
+
+import java.io.Serializable;
+import java.rmi.Remote;
 
 /**
  * TimeoutCenterService
@@ -12,7 +16,8 @@ import com.common.timeout.api.dto.WebResponse;
  * @author zhanghaojie
  * @date 2021/12/13 17:57
  */
-public interface TimeoutCenterService {
+@Removal
+public interface TimeoutCenterService extends Remote  {
 
     /**
      * 查询超时中心任务

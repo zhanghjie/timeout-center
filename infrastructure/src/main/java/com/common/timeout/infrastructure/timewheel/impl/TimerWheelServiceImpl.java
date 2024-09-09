@@ -1,6 +1,7 @@
 package com.common.timeout.infrastructure.timewheel.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.common.timeout.infrastructure.threadpool.TCThreadPoolExecutor;
 import com.common.timeout.infrastructure.timewheel.TimerWheelService;
 import com.common.timeout.infrastructure.timewheel.vo.TimeWheel;
 import com.common.timeout.infrastructure.timewheel.vo.TimerTask;
@@ -41,9 +42,8 @@ public class TimerWheelServiceImpl implements TimerWheelService {
     /**
      * 过期任务执行线程
      */
-    private ExecutorService workerThreadPool = new ThreadPoolExecutor(100, 100,
-            0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(), workerThreadFactory);
+    private TCThreadPoolExecutor workerThreadPool = new TCThreadPoolExecutor(8, 100,
+            5, TimeUnit.SECONDS);
 
     ThreadFactory bossThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("bossThread-pool-%d").build();
@@ -60,7 +60,7 @@ public class TimerWheelServiceImpl implements TimerWheelService {
         //20ms推动一次时间轮运转
         this.bossThreadPool.submit(() -> {
             for (; ; ) {
-                this.advanceClock(20L);
+                this.advanceClock(5L);
             }
         });
     }
@@ -71,7 +71,7 @@ public class TimerWheelServiceImpl implements TimerWheelService {
             //已经过期了
             TimerTask timerTask = entry.getTimerTask();
             log.info("=====任务:{} 已到期,准备执行============", timerTask.getBizId());
-            workerThreadPool.submit(timerTask);
+            workerThreadPool.submitTask(timerTask, timerTask.getOrder());
         }
     }
 

@@ -3,13 +3,13 @@ package com.common.timeout.infrastructure.invocation.jdkproxy;
 import java.lang.reflect.Proxy;
 
 /**
- * ProxyFactory
- * 功能描述：TODO
+ * LocalProxyFactory
+ * 功能描述：本地代理工厂
  *
  * @author zhanghaojie
  * @date 2022/10/24 15:17
  */
-public class ProxyFactory {
+public class LocalProxyFactory {
     @SuppressWarnings("unchecked")
     public static <T> T getProxy(T target) {
         return (T) Proxy.newProxyInstance(
@@ -19,5 +19,4 @@ public class ProxyFactory {
     }
 
 
- 
 }

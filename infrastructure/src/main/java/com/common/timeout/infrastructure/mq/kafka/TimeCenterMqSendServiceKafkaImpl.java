@@ -1,12 +1,9 @@
 package com.common.timeout.infrastructure.mq.kafka;
 
-import com.alibaba.fastjson.JSON;
 import com.common.timeout.infrastructure.db.model.TaskTypeMangerDTO;
 import com.common.timeout.infrastructure.db.model.TimeoutTaskDTO;
 import com.common.timeout.infrastructure.mq.TimeCenterMqSendService;
-import com.common.timeout.infrastructure.mq.kafka.callback.TimeoutMqCallback;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,6 +35,7 @@ public class TimeCenterMqSendServiceKafkaImpl implements TimeCenterMqSendService
      */
     @Override
     public void sendMessage(TimeoutTaskDTO msg, TaskTypeMangerDTO taskTypeMangerDTO) {
+        // todo 根据各个实现MQ
 //        //回调函数在Producer收到ack时异步调用
 //        kafkaTemplate.send(taskTypeMangerDTO.getMqTopic(), JSON.toJSONString(msg))
 //                .addCallback(new TimeoutMqCallback(msg.getBizType(), msg.getBizId()));

@@ -1,8 +1,11 @@
-package com.common.timeout.infrastructure.service;
+package com.common.timeout.infrastructure.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.common.timeout.infrastructure.TaskTypeMangerService;
-import com.common.timeout.infrastructure.cache.ehcache.DefaultEhcacheUtils;
+import com.common.timeout.infrastructure.annotation.ToLog;
+import com.common.timeout.infrastructure.cache.TimeoutCacheService;
 import com.common.timeout.infrastructure.db.mapper.TaskTypeMangerMapper;
 import com.common.timeout.infrastructure.db.model.TaskTypeMangerDTO;
 import org.apache.commons.lang3.StringUtils;
@@ -22,11 +25,15 @@ import java.util.stream.Collectors;
  * @author zhanghaojie
  * @date 2022/3/17 15:33
  */
+@ToLog
 @Service
 public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
     @Autowired
     @SuppressWarnings("all")
     private TaskTypeMangerMapper taskTypeMangerMapper;
+
+    @Autowired
+    private TimeoutCacheService timeoutCacheService;
 
     private static final String ALL_TASK_TYPE = "allTaskType";
 
@@ -43,17 +50,17 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
      */
     @Override
     public List<TaskTypeMangerDTO> getAllTaskTypeMangerDTO() {
-        List<TaskTypeMangerDTO> taskTypeMangerDTOList = (List<TaskTypeMangerDTO>) DefaultEhcacheUtils.get(ALL_TASK_TYPE_DTO);
-        if (!Objects.isNull(taskTypeMangerDTOList)) {
-            return taskTypeMangerDTOList;
+        String value = timeoutCacheService.getValue(ALL_TASK_TYPE_DTO);
+        if (StringUtils.isNotBlank(value)) {
+            return JSONArray.parseArray(value, TaskTypeMangerDTO.class);
         }
-        taskTypeMangerDTOList = taskTypeMangerMapper.selectList(new QueryWrapper<>());
+        List<TaskTypeMangerDTO> taskTypeMangerDTOList = taskTypeMangerMapper.selectList(new QueryWrapper<>());
         if (CollectionUtils.isEmpty(taskTypeMangerDTOList)) {
             // 缓存空值 避免穿透
-            DefaultEhcacheUtils.put(ALL_TASK_TYPE_DTO, new ArrayList<>());
+            timeoutCacheService.addValue(ALL_TASK_TYPE_DTO, JSON.toJSONString(taskTypeMangerDTOList));
             return new ArrayList<>();
         }
-        DefaultEhcacheUtils.put(ALL_TASK_TYPE_DTO, taskTypeMangerDTOList);
+        timeoutCacheService.addValue(ALL_TASK_TYPE_DTO, JSON.toJSONString(taskTypeMangerDTOList));
         return taskTypeMangerDTOList;
     }
 
@@ -67,18 +74,19 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
      */
     @Override
     public List<String> getAllTaskType() {
-        List<String> taskTypeList = (List<String>) DefaultEhcacheUtils.get(ALL_TASK_TYPE);
-        if (!Objects.isNull(taskTypeList)) {
-            return taskTypeList;
+        String value = timeoutCacheService.getValue(ALL_TASK_TYPE);
+
+        if (StringUtils.isNotBlank(value)) {
+            return JSONArray.parseArray(value, String.class);
         }
         List<TaskTypeMangerDTO> mangerDTOList = getAllTaskTypeMangerDTO();
         if (CollectionUtils.isEmpty(mangerDTOList)) {
             // 缓存空值 避免穿透
-            DefaultEhcacheUtils.put(ALL_TASK_TYPE, new ArrayList<>());
+            timeoutCacheService.addValue(ALL_TASK_TYPE, JSON.toJSONString(new ArrayList<>()));
             return new ArrayList<>();
         }
-        taskTypeList = mangerDTOList.stream().map(TaskTypeMangerDTO::getBizType).collect(Collectors.toList());
-        DefaultEhcacheUtils.put(ALL_TASK_TYPE, taskTypeList);
+        List<String> taskTypeList = mangerDTOList.stream().map(TaskTypeMangerDTO::getBizType).collect(Collectors.toList());
+        timeoutCacheService.addValue(ALL_TASK_TYPE, JSON.toJSONString(taskTypeList));
         return taskTypeList;
     }
 
@@ -92,20 +100,18 @@ public class TaskTypeMangerServiceImpl implements TaskTypeMangerService {
      */
     @Override
     public TaskTypeMangerDTO getTaskTypeByBizType(String bizType) {
-        TaskTypeMangerDTO taskTypeMangerDTO = (TaskTypeMangerDTO) DefaultEhcacheUtils.get(TASK_TYPE_DTO + bizType);
-        if (!Objects.isNull(taskTypeMangerDTO) && StringUtils.isNotBlank(taskTypeMangerDTO.getBizType())) {
-            return taskTypeMangerDTO;
+        String value = timeoutCacheService.getValue(TASK_TYPE_DTO + bizType);
+        if (StringUtils.isNotBlank(value)) {
+            return JSON.parseObject(value, TaskTypeMangerDTO.class);
         }
         TaskTypeMangerDTO queryMangerDTO = new TaskTypeMangerDTO(bizType);
-        taskTypeMangerDTO = taskTypeMangerMapper.selectOne(new QueryWrapper<>(queryMangerDTO));
-        if (!Objects.isNull(taskTypeMangerDTO)) {
-            taskTypeMangerDTO = new TaskTypeMangerDTO();
-            taskTypeMangerDTO.setBizType(bizType);
+        TaskTypeMangerDTO taskTypeMangerDTO = taskTypeMangerMapper.selectOne(new QueryWrapper<>(queryMangerDTO));
+        if (Objects.isNull(taskTypeMangerDTO)) {
             // 缓存空值 避免穿透
-            DefaultEhcacheUtils.put(TASK_TYPE_DTO + bizType, new TaskTypeMangerDTO());
+            timeoutCacheService.addValue(TASK_TYPE_DTO + bizType, JSON.toJSONString(new TaskTypeMangerDTO()));
             return null;
         }
-        DefaultEhcacheUtils.put(TASK_TYPE_DTO + bizType, taskTypeMangerDTO);
+        timeoutCacheService.addValue(TASK_TYPE_DTO + bizType, JSON.toJSONString(taskTypeMangerDTO));
         return taskTypeMangerDTO;
     }
 }

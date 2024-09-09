@@ -1,8 +1,14 @@
 package com.common.timeout.infrastructure.cache.ehcache;
 
+import com.common.timeout.infrastructure.annotation.ToLog;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -14,57 +20,25 @@ import javax.annotation.Resource;
  * @date 2022/3/17 16:09
  */
 @Slf4j
+@SuppressWarnings("WeakerAccess")
+@CacheConfig(cacheNames = {"lemonCache"})
+@Component
 public class DefaultEhcacheUtils {
 
-    @Resource(name = "defaultEhcache")
-    private static Cache cache;
-
-
-    /**
-     * 添加缓存数据
-     *
-     * @param key
-     * @param value
-     */
-    public static void put(String key, Object value) {
-        try {
-            Element element = new Element(key, value);
-            cache.put(element);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("添加缓存失败：{}", e.getMessage());
-        }
+    @Cacheable(key = "#keyName")
+    public Object getCache(String keyName) {
+        log.info("[ EHCACHE ] 正在缓存 ==> Key: {}", keyName);
+        return null;
     }
 
-    /**
-     * 获取缓存数据
-     *
-     * @param key
-     * @return
-     */
-    public static Object get(String key) {
-        try {
-            Element element = cache.get(key);
-            return element == null ? null : element.getObjectValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("获取缓存数据失败：{}", e.getMessage());
-            return null;
-        }
+    @CachePut(key = "#keyName")
+    public void updateCache(String keyName, String t) {
+        log.info("[ EHCACHE ]  正在保存 ==> Key: {},Value: {}", keyName, t);
     }
 
-    /**
-     * 删除缓存数据
-     *
-     * @param key
-     */
-    public static void delete(String key) {
-        try {
-            cache.remove(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除缓存数据失败：{}", e.getMessage());
-        }
+    @CacheEvict(key = "#keyName")
+    public void delCache(String keyName) {
+        log.info("[ EHCACHE ]  正在删除 ==> Key:{}", keyName);
     }
 
 

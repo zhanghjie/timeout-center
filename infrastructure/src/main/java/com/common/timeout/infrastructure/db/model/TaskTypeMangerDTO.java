@@ -1,5 +1,6 @@
 package com.common.timeout.infrastructure.db.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  * @date 2022/3/17 15:22
  */
 @Data
+@TableName("timeout_task_type")
 public class TaskTypeMangerDTO {
     // id
     private String id;
@@ -21,6 +23,8 @@ public class TaskTypeMangerDTO {
     private String responsible;
     // 超时任务发送mq的topic
     private String mqTopic;
+    // 优先级
+    private Integer order;
     // 创建时间
     private Long createTime;
     // 修改时间

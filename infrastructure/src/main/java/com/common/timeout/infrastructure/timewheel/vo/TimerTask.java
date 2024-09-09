@@ -1,7 +1,7 @@
 package com.common.timeout.infrastructure.timewheel.vo;
 
+import com.common.timeout.infrastructure.threadpool.PrioritizedTask;
 import lombok.Data;
-import lombok.SneakyThrows;
 
 /**
  * TimerTask
@@ -33,8 +33,16 @@ public class TimerTask implements Runnable {
      */
     private TimerTaskEntry timerTaskEntry;
 
+    /**
+     * 任务所在的entry
+     */
+    private Integer entryId;
 
-    public TimerTask(String bizType, String bizId, Long actionTime) {
+    private Integer order;
+
+
+    public TimerTask(String bizType, String bizId, Long actionTime, Integer order) {
+        this.order = order;
         this.bizType = bizType;
         this.bizId = bizId;
         this.actionTime = actionTime;
@@ -52,6 +60,7 @@ public class TimerTask implements Runnable {
 
     @Override
     public void run() {
+        // 根据 BizType 和 BizId 从数据库查询任务
         System.out.println("执行了定时任务,当前时间:" + System.currentTimeMillis() + "bizType:" + this.bizType + ",bizId" + bizId);
     }
 

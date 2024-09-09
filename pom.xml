@@ -37,6 +37,7 @@
         <module>starter</module>
         <module>infrastructure</module>
         <module>api</module>
+        <module>domain</module>
     </modules>
     <dependencies>
         <dependency>
@@ -55,11 +56,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.10.6</version>
-        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -71,7 +68,26 @@
             <artifactId>dysmsapi20170525</artifactId>
             <version>2.0.18</version>
         </dependency>
+        <!-- caching -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-remoting</artifactId>
+        </dependency>
+        <!-- 其他依赖... -->
 
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.16.3</version> <!-- 根据实际版本选择 -->
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -266,6 +282,29 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            　　<groupId>com.alibaba</groupId>
+            　　<artifactId>easyexcel</artifactId>
+            　　<version>2.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>0.9</version>
+        </dependency>
+        <!--xls-->
+        <dependency>
+            　　<groupId>org.apache.poi</groupId>
+            　　<artifactId>poi</artifactId>
+            　　<version>3.17</version>
+        </dependency>
+        <dependency>
+            　　<groupId>org.apache.poi</groupId>
+            　　<artifactId>poi-ooxml</artifactId>
+            　　<version>3.17</version>
         </dependency>
     </dependencies>
 

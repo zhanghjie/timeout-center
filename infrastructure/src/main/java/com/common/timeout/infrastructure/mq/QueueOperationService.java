@@ -1,4 +1,4 @@
-package com.common.timeout.infrastructure.mq.service;
+package com.common.timeout.infrastructure.mq;
 
 import com.common.timeout.infrastructure.db.model.TimeoutTaskDTO;
 
