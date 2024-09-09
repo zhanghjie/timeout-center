@@ -27,7 +27,7 @@ public enum TimeoutCenterStateEnum {
     /**
      * 执行中
      */
-    EXECUTION(4, "执行中"),
+    EXECUTION(4, "执行中")
     ;
 
 
