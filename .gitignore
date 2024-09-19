@@ -35,3 +35,4 @@ Thumbs.db
 
 # pods ignore
 Pods/
+/catalina.base_IS_UNDEFINED/

@@ -33,7 +33,7 @@
     </properties>
 
     <modules>
-        <module>interface</module>
+        <module>timeout-interface</module>
         <module>starter</module>
         <module>infrastructure</module>
         <module>api</module>
@@ -77,10 +77,11 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-remoting</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-remoting</artifactId>-->
+<!--            <version>2.5.6</version>-->
+<!--        </dependency>-->
         <!-- 其他依赖... -->
 
         <dependency>
@@ -285,9 +286,12 @@
         </dependency>
 
         <dependency>
-            　　<groupId>com.alibaba</groupId>
-            　　<artifactId>easyexcel</artifactId>
-            　　<version>2.2.4</version>
+            　　
+            <groupId>com.alibaba</groupId>
+            　　
+            <artifactId>easyexcel</artifactId>
+            　　
+            <version>2.2.4</version>
         </dependency>
 
         <dependency>
@@ -297,14 +301,20 @@
         </dependency>
         <!--xls-->
         <dependency>
-            　　<groupId>org.apache.poi</groupId>
-            　　<artifactId>poi</artifactId>
-            　　<version>3.17</version>
+            　　
+            <groupId>org.apache.poi</groupId>
+            　　
+            <artifactId>poi</artifactId>
+            　　
+            <version>3.17</version>
         </dependency>
         <dependency>
-            　　<groupId>org.apache.poi</groupId>
-            　　<artifactId>poi-ooxml</artifactId>
-            　　<version>3.17</version>
+            　　
+            <groupId>org.apache.poi</groupId>
+            　　
+            <artifactId>poi-ooxml</artifactId>
+            　　
+            <version>3.17</version>
         </dependency>
     </dependencies>
 
