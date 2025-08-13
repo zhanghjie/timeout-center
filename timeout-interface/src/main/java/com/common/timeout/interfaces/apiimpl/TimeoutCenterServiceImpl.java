@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
-import java.rmi.Naming;
+
 import java.util.Objects;
 
 /**
@@ -79,7 +79,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService , Serializ
      * @date 2021/12/13 18:49
      */
     @Override
-    public WebResponse addTimeoutTask(AddTimeoutTaskDTO addTimeoutTaskDTO) {
+    public WebResponse<Void> addTimeoutTask(AddTimeoutTaskDTO addTimeoutTaskDTO) {
         if (typeMangerService.getAllTaskType().contains(addTimeoutTaskDTO.getBizType())) {
             log.error("添加超时中心任务 bizType不存在：{}", JSON.toJSONString(addTimeoutTaskDTO));
             return WebResponse.returnFail("10001", "bizType不存在");
@@ -109,7 +109,7 @@ public class TimeoutCenterServiceImpl implements TimeoutCenterService , Serializ
      * @date 2021/12/13 18:49
      */
     @Override
-    public WebResponse cancelTimeoutTask(String bizType, String bizId) {
+    public WebResponse<Void> cancelTimeoutTask(String bizType, String bizId) {
         if (typeMangerService.getAllTaskType().contains(bizType)) {
             log.error("取消超时中心任务 bizType不存在：{},bizId:{}", bizId, bizId);
             return WebResponse.returnFail("10001", "bizType不存在");

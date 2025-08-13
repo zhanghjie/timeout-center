@@ -1,6 +1,8 @@
 package com.common.timeout.api.dto;
 
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ import java.util.Objects;
  * @author zhanghaojie
  * @date 2022/2/22 10:27
  */
+@Data
 public class WebResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,6 +25,7 @@ public class WebResponse<T> implements Serializable {
     private String msg;
 
     private Boolean isSuccess;
+
     private T data;
 
     private WebResponse(String code) {

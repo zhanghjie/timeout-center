@@ -60,7 +60,7 @@ public class TimerWheelServiceImpl implements TimerWheelService {
         //20ms推动一次时间轮运转
         this.bossThreadPool.submit(() -> {
             for (; ; ) {
-                this.advanceClock(5L);
+                this.advanceClock(20L);
             }
         });
     }

@@ -4,11 +4,6 @@ package com.common.timeout.api;
 import com.common.timeout.api.dto.AddTimeoutTaskDTO;
 import com.common.timeout.api.dto.TimeoutTaskVO;
 import com.common.timeout.api.dto.WebResponse;
-import org.apache.poi.util.Removal;
-
-import java.io.Serializable;
-import java.rmi.Remote;
-
 /**
  * TimeoutCenterService
  * 功能描述: 超时中心任务服务
@@ -16,8 +11,7 @@ import java.rmi.Remote;
  * @author zhanghaojie
  * @date 2021/12/13 17:57
  */
-@Removal
-public interface TimeoutCenterService extends Remote  {
+public interface TimeoutCenterService {
 
     /**
      * 查询超时中心任务
@@ -38,7 +32,7 @@ public interface TimeoutCenterService extends Remote  {
      * @author zhanghaojie
      * @date 2021/12/13 18:49
      */
-    WebResponse addTimeoutTask(AddTimeoutTaskDTO addTimeoutTaskDTO);
+    WebResponse<Void> addTimeoutTask(AddTimeoutTaskDTO addTimeoutTaskDTO);
 
     /**
      * 取消超时中心任务
@@ -48,5 +42,5 @@ public interface TimeoutCenterService extends Remote  {
      * @author zhanghaojie
      * @date 2021/12/13 18:49
      */
-    WebResponse cancelTimeoutTask(String bizType, String bizId);
+    WebResponse<Void> cancelTimeoutTask(String bizType, String bizId);
 }

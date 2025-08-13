@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package timeout.center;
+
+option java_package = "com.common.timeout.api.grpc";
+option java_outer_classname = "TimeoutCenterProto";
+option java_multiple_files = true;
+
+// 超时中心gRPC服务定义
+service TimeoutCenterService {
+    // 查询超时任务
+    rpc QueryTimeoutTask(QueryTimeoutTaskRequest) returns (QueryTimeoutTaskResponse);
+    
+    // 添加超时任务
+    rpc AddTimeoutTask(AddTimeoutTaskRequest) returns (AddTimeoutTaskResponse);
+    
+    // 取消超时任务
+    rpc CancelTimeoutTask(CancelTimeoutTaskRequest) returns (CancelTimeoutTaskResponse);
+    
+    // 健康检查
+    rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+// 查询超时任务请求
+message QueryTimeoutTaskRequest {
+    string biz_type = 1;    // 业务类型
+    string biz_id = 2;      // 业务ID
+}
+
+// 查询超时任务响应
+message QueryTimeoutTaskResponse {
+    bool success = 1;           // 是否成功
+    string error_code = 2;      // 错误码
+    string error_message = 3;   // 错误信息
+    TimeoutTask task = 4;       // 任务信息
+}
+
+// 添加超时任务请求
+message AddTimeoutTaskRequest {
+    TimeoutTaskInput task = 1;  // 任务输入信息
+}
+
+// 添加超时任务响应
+message AddTimeoutTaskResponse {
+    bool success = 1;           // 是否成功
+    string error_code = 2;      // 错误码
+    string error_message = 3;   // 错误信息
+}
+
+// 取消超时任务请求
+message CancelTimeoutTaskRequest {
+    string biz_type = 1;    // 业务类型
+    string biz_id = 2;      // 业务ID
+}
+
+// 取消超时任务响应
+message CancelTimeoutTaskResponse {
+    bool success = 1;           // 是否成功
+    string error_code = 2;      // 错误码
+    string error_message = 3;   // 错误信息
+}
+
+// 健康检查请求
+message HealthCheckRequest {
+    string service = 1;     // 服务名称
+}
+
+// 健康检查响应
+message HealthCheckResponse {
+    bool healthy = 1;       // 是否健康
+    string message = 2;     // 消息
+}
+
+// 超时任务信息
+message TimeoutTask {
+    int64 id = 1;               // 主键ID
+    string biz_type = 2;        // 业务类型
+    string biz_id = 3;          // 业务ID
+    int32 state = 4;            // 任务状态
+    int64 action_time = 5;      // 执行时间
+    string data = 6;            // 任务数据
+    int32 retry_count = 7;      // 重试次数
+    int32 order = 8;            // 优先级
+    int64 create_time = 9;      // 创建时间
+    int64 update_time = 10;     // 更新时间
+}
+
+// 超时任务输入信息
+message TimeoutTaskInput {
+    string biz_type = 1;        // 业务类型
+    string biz_id = 2;          // 业务ID
+    int64 action_time = 3;      // 执行时间
+    string data = 4;            // 任务数据
+    int32 order = 5;            // 优先级
+}

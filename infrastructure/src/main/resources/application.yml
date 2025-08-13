@@ -1,13 +1,91 @@
 spring:
   resources:
     static-locations: classpath:static/
-
+  application:
+    name: timeout-center
+  profiles:
+    active: beta
 
 logging:
   config: classpath:logback.xml  #日志文件
 
-#  import: dubbo.xml
-#dubbo:
-#  zkadress: zk.beta.corp.qunar.com:2181,zk1.beta.corp.qunar.com:2181,zk2.beta.corp.qunar.com:2181,zk3.beta.corp.qunar.com:2181
-#  group: /appcenter/group/beta
+# 超时中心配置
+timeout-center:
+  # RPC协议配置
+  rpc:
+    protocol: dubbo  # 可选: dubbo, feign, grpc, http, netty
+    multi-protocol-enabled: false
+    connect-timeout: 5000
+    read-timeout: 30000
+    retry-count: 3
+    load-balance-enabled: true
+    load-balance-strategy: round_robin
+    
+    # Dubbo配置
+    dubbo:
+      registry: zookeeper://localhost:2181
+      port: 20880
+      protocol-name: dubbo
+      application-name: timeout-center
+      group: timeout-center
+      version: 1.0.0
+      threads: 200
+      serialization: hessian2
+      cluster: failfast
+      loadbalance: random
+    
+    # gRPC配置
+    grpc:
+      port: 9090
+      host: localhost
+      max-message-size: 4194304
+      keep-alive-time: 30
+      tls-enabled: false
+    
+    # Netty配置
+    netty:
+      port: 8888
+      host: 0.0.0.0
+      boss-threads: 1
+      worker-threads: 8
+      connect-timeout: 5000
+      tcp-no-delay: true
+      keep-alive: true
+    
+    # HTTP配置
+    http:
+      base-url: http://localhost:8080
+      context-path: /timeout-center
+      port: 8080
+    
+    # Feign配置
+    feign:
+      service-url: http://localhost:8080
+      service-name: timeout-center
+      hystrix-enabled: true
+  
+  # 时间轮配置
+  time-wheel:
+    tick-ms: 1
+    wheel-size: 20
+    worker-threads: 8
+    boss-threads: 1
+  
+  # 任务配置
+  task:
+    retry-time: 60000  # 重试间隔时间(ms)
+    retry-count: 3     # 最大重试次数
+    batch-size: 100    # 批处理大小
+  
+  # 队列配置
+  queue:
+    store-queue-prefix: "timeout:store:"
+    prepare-queue-prefix: "timeout:prepare:"
+    dead-queue-prefix: "timeout:dead:"
+
+# Swagger配置
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
 

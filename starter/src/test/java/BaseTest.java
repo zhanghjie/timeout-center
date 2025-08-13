@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author zhanghaojie
  * @date 2022/10/26 16:30
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = TimeoutCenterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BaseTest {
 }
